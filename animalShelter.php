@@ -18,7 +18,11 @@ function create_post_type() {
 		array(
 			'labels' => array(
 				'name' => __( 'Animals' ),
-				'singular_name' => ( 'Animal' )
+				'singular_name' => __( 'Animal' ),
+				'add_new' => __( 'Add New', 'animal' ),
+				'add_new_item' => __( 'Add new animal' ),
+				'edit_item' => __( 'Edit Animal Information' ),
+				'view_item' => __( 'View animal '),
 			),
 		'public' => true,
 		'has_archive' => true,
