@@ -13,7 +13,7 @@
 //create the post type of animals
 
 add_action( 'init', 'create_post_type' );
-function create_Animal() {
+function create_post_type() {
 	register_post_type('animal',
 		array(
 			'labels' => array(
