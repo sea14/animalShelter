@@ -10,4 +10,18 @@
 * License: GPL 2
 * /
 
+//create the post type of animals
 
+add_action( 'init', 'create_post_type' );
+function create_Animal() {
+	register_post_type('animal',
+		array(
+			'labels' => array(
+				'name' => __( 'Animals' ),
+				'singular_name' => ( 'Animal' )
+			),
+		'public' => true,
+		'has_archive' => true,
+		)
+	);
+}
