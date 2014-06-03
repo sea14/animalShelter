@@ -34,16 +34,17 @@ function create_post_type() {
 //create our meta boxes
 function add_animal_metaboxes() {
 
-	add_animal_box(
-		add_meta_box( 'animal_meta', __( 'Animal Information', 'animal-textdomain' ), 'animal_meta_callback', 'animal');
+		add_meta_box(
+			'custom_meta_box',
+			'Custom Meta Box',
+			'show_custom_meta_box',
+			'animal',
+			'normal',
+			'high');
 
-		)
-	add_action('add_meta_boxes' 'add_animal_metaboxes');
+
+
+	add_action( 'add_animal_metaboxes', 'add_custom_meta_box');
 
 
 }
-		//for the animal name
-
-		//for the animal status, a drop-down
-
-		//will be a wysiwig for more info about the animal
