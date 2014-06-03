@@ -29,3 +29,16 @@ function create_post_type() {
 		)
 	);
 }
+
+
+//create our meta boxes
+function add_animal_metaboxes() {
+	add_meta_box('wp_animal_name', 'Animal Name');
+	add_meta_box('wp_animal_status', 'Animal Status');
+	add_meta_box('wp_animal_info', 'Animal Information');
+}
+		//for the animal name
+
+		//for the animal status, a drop-down
+
+		//will be a wysiwig for more info about the animal
