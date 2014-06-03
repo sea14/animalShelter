@@ -12,7 +12,7 @@
 
 //create the post type of animals
 
-add_action( 'init', 'create_post_type' );
+add_action( 'init', 'create_post_type', 'add_animal_metaboxes' );
 function create_post_type() {
 	register_post_type('animal',
 		array(
@@ -33,9 +33,9 @@ function create_post_type() {
 
 //create our meta boxes
 function add_animal_metaboxes() {
-	add_meta_box('wp_animal_name', 'Animal Name');
-	add_meta_box('wp_animal_status', 'Animal Status');
-	add_meta_box('wp_animal_info', 'Animal Information');
+
+
+
 }
 		//for the animal name
 
