@@ -12,7 +12,7 @@
 
 //create the post type of animals
 
-add_action( 'init', 'create_post_type', 'add_animal_metaboxes' );
+add_action( 'init', 'create_post_type' );
 function create_post_type() {
 	register_post_type('animal',
 		array(
@@ -34,6 +34,11 @@ function create_post_type() {
 //create our meta boxes
 function add_animal_metaboxes() {
 
+	add_animal_box(
+		add_meta_box( 'animal_meta', __( 'Animal Information', 'animal-textdomain' ), 'animal_meta_callback', 'animal');
+
+		)
+	add_action('add_meta_boxes' 'add_animal_metaboxes');
 
 
 }
