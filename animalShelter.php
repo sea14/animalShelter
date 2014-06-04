@@ -55,6 +55,7 @@ function add_animal_box() {
 		'high',
 		"wysiwyg-editor");
 		
+	add_action('save_post', 'save_custom_meta_animals', 1, 2);
 		
 }
 add_action('add_meta_boxes', 'add_animal_box');
@@ -170,7 +171,7 @@ function save_custom_meta_animals($post_id, $post) {
 
 	}
 }
-	add_action('save_post', 'save_custom_meta', 1, 2);
+	add_action('save_post', 'save_custom_meta_animals', 1, 2);
 
 
 if(!function_exists('wp_get_current_user')) {
