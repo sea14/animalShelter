@@ -34,8 +34,8 @@ function createAnimal_post_type() {
 		'show_ui' => true,
 		'add_submenu_page' => true,
 		'show_in_nav_menus' => true,
-		'title' => 'course',
-		'supports' => array( 'title', 'thumbnail' ),
+		'title' => 'Animal',
+		'supports' => array( 'Animal', 'thumbnail' ),
 		)
 
 	);
@@ -79,7 +79,7 @@ $prefix = 'animal_';
 				array(
 					'label' => 'Animal Description',
 					'desc' => 'Animal Description',
-					'id' => $prefix.'textarea',
+					'id' => $prefix.'description',
 					'type' => 'textarea'
 				),
 				
