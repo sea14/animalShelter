@@ -99,6 +99,9 @@ function show_animal_box() {
 	//using nonce for verification
 	echo '<input type="hidden" name="custom_animal_meta_box_nonce" value="'.wp_create_nonce(basename(__FILE__)).'" />';
 
+	//wp editor info
+	$editor_id = 'animal_description';
+
 	//begin the field table and loop
 	echo '<table class="form-table">';
 	foreach ($animalBox['fields'] as $field) {
@@ -122,18 +125,10 @@ function show_animal_box() {
 
 				//for a textarea
 				case 'textarea':
-					$post_id = get_the_ID();
-					echo '<textarea name="'.$field['id'].'" cols="60" rows="4">'.$meta.'</textarea>
-						<br /><span class="description">'.$field['desc'].'</span>';
+					$content = $meta;
+					wp_editor( $content, $editor_id );
 						break;
-				case 'select':
-					echo '<select name="', $field['id'], '"id="', $field['id'], '">';
-					foreach ($field['options'] as $option) {
-						echo '<option', $meta == $option ? ' selected="selected"' : '', '>', $option, '</option';
-					}
-					echo '</select>';
 
-						break;
 		} //end switch
 
 		echo '</td></tr>';
