@@ -151,5 +151,28 @@ function save_animals_details($post_id) {
 
 add_action('save_post', 'save_animals_details',1,2);
 
+add_filter('template_include', 'include_template_function', 1);
+
+	function include_template_function( $template_path ) {
+
+		if( get_post_type() == 'animals' ) {
+
+			if ( is_single() ) {
+				//checks if file exists in theme first
+				//otherwise will serve our plugin template file
+				if ($theme_file = locate_template( array ( 'single-animals-php') ) ) {
+
+					$template_file = $theme_file;
+				} else {
+
+						$template_path = plugin_dir_path( __FILE__ ) . '/single-animals.php';
+
+				}
+
+			}
+		}
+
+		return $template_path;
+	}
 
 
