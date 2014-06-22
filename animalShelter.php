@@ -47,7 +47,7 @@ function createAnimal_post_type() {
 function add_animal_box() {
 
 	add_meta_box(
-		'animal_custom_meta_box',
+		'custom_animal_meta_box',
 		'Add Animal Information',
 		'show_animal_box',
 		'animals',
@@ -61,21 +61,31 @@ function add_animal_box() {
 add_action('add_meta_boxes', 'add_animal_box');
 
 //create an array for the fields
-$prefix = 'custom_';
-$custom_animal_fields = array(
-		array(
-			'label' => 'Animal Name',
-			'desc' => 'Animal Name',
-			'id' => $prefix.'text2',
-			'type' => 'text'
-			),
-		array(
-			'label' => 'Animal Description',
-			'desc' => 'Animal Description',
-			'id' => $prefix.'textarea',
-			'type' => 'textarea'
-			)
+$prefix = 'animal_';		
+	$animalBox = array(
+		'id' => 'animal-meta-box',
+		'title' =>'animal information',
+		'page' => 'animal',
+		'context' => 'normal',
+		'priority' => 'high',
+		'fields' => array(
+			
+				array('label' => 'Animal Name',
+					'desc' => 'Animal Name',
+					'id' => $prefix.'name',
+					'type' => 'text'
+				),
+
+				array(
+					'label' => 'Animal Description',
+					'desc' => 'Animal Description',
+					'id' => $prefix.'textarea',
+					'type' => 'textarea'
+				),
+				
+		)
 );
+
 
 
 //callback below
@@ -84,13 +94,14 @@ function show_animal_box() {
 
 
 	$content = '';
-	global $custom_animal_fields, $post;
+	global $animalBox;
+	global $post;
 	//using nonce for verification
-	echo '<input type="hidden" name="custom_meta_box_nonce" value="'.wp_create_nonce(basename(__FILE__)).'" />';
+	echo '<input type="hidden" name="custom_animal_meta_box_nonce" value="'.wp_create_nonce(basename(__FILE__)).'" />';
 
 	//begin the field table and loop
 	echo '<table class="form-table">';
-	foreach ($custom_animal_fields as $field) {
+	foreach ($animalBox['fields'] as $field) {
 
 		//get value of field if it is in this post
 		$meta = get_post_meta($post->ID, $field['id'], true);
@@ -115,8 +126,14 @@ function show_animal_box() {
 					echo '<textarea name="'.$field['id'].'" cols="60" rows="4">'.$meta.'</textarea>
 						<br /><span class="description">'.$field['desc'].'</span>';
 						break;
+				case 'select':
+					echo '<select name="', $field['id'], '"id="', $field['id'], '">';
+					foreach ($field['options'] as $option) {
+						echo '<option', $meta == $option ? ' selected="selected"' : '', '>', $option, '</option';
+					}
+					echo '</select>';
 
-
+						break;
 		} //end switch
 
 		echo '</td></tr>';
@@ -130,50 +147,14 @@ function show_animal_box() {
 
 
 //save the data below
-function save_custom_meta_animals($post_id, $post) {
-	global $custom_meta_fields;
-
-
-	if ( isset($_POST['custom_meta_box_nonce']) && !wp_verify_nonce($_POST['custom_meta_box_nonce'], __FILE__) ) {
-    return $post_id;
+function save_animals_details($post_id) {
+	
+	    if( isset($_POST["animal_description"]) ) { update_post_meta($post_id, "animal_description", $_POST["animal_description"]); }        
+        if( isset($_POST["animal_name"]) ) { update_post_meta($post_id, "animal_name", $_POST["animal_name"]); }
+        
 }
 
-	//check autosave,
-	if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
-		return $post_id;
+add_action('save_post', 'save_animals_details',1,2);
 
 
 
-
-	//check permissions
-	if ('page' == $post->post_type) {
-		if(!current_user_can('edit_page', $post_id))
-			return $post_id;
-	} elseif (!current_user_can('edit_post', $post_id)) {
-		return $post_id;
-	}
-
-	if(defined('DOING_AUTOSAVE') && (DOING_AUTOSAVE)){
-		//loop through fields and save the data
-		foreach ($custom_meta_fields as $field) {
-
-		$old = get_post_meta($post_id, $field['id'], true);
-		$new = $_POST[$field['id']];
-		if ($new && $new != $old) {
-
-			update_post_meta($post_id, $field['id'], $new);
-
-			} elseif ('' == $new && $old) {
-				delete_post_meta($post_id, $field['id'], $old);
-			}
-
-		} //end our foreach
-
-	}
-}
-	add_action('save_post', 'save_custom_meta_animals', 1, 2);
-
-
-if(!function_exists('wp_get_current_user')) {
-    include(ABSPATH . "wp-includes/pluggable.php"); 
-}
